@@ -7,7 +7,7 @@ const OwnerPage = () => {
       id:1,
       name:"Milan",
       surname:"Test",
-      jmbg:"12121212123"
+      jmbg:"1212122222"
     },
     {
       id:2,
@@ -28,17 +28,20 @@ const OwnerPage = () => {
       jmbg:"12121212123"
     }
     ]);
+  const add = () => {alert('Dodavanje vlasnika')}
+  const edit = () => {alert('Izmena vlasnika')}
+  const erase = () => {alert('Brisanje vlasnika')}
   return (
     <Box sx={{ margin: '30px'}}>            
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h4">
           Vlasnici
-        </Typography>        
-        <Button variant="contained" color="primary" sx={{margin:'10px;'}}>
+        </Typography>      
+        <Button variant="contained" color="primary" sx={{margin:'10px;'}} onClick={add}>
           Dodaj
         </Button>
       </Box>
-      
+      <hr></hr>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -59,10 +62,10 @@ const OwnerPage = () => {
                 <TableCell>{owner.jmbg}</TableCell>
                 <TableCell>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Button variant="contained" color="warning">
+                    <Button variant="contained" color="warning" onClick={edit}>
                       Izmeni
                     </Button>
-                    <Button variant="contained" color="error">
+                    <Button variant="contained" color="error" onClick={erase}>
                       Obriši
                     </Button>
                   </Box>
