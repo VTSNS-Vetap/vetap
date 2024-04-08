@@ -4,7 +4,7 @@ on:
       - "main" # change to the branch you wish to deploy from
 
 permissions:
-  contents: read
+  contents: write-all
   pages: write
   id-token: write
 
