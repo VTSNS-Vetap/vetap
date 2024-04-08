@@ -20,5 +20,4 @@ jobs:
       id: deployment
       with:
         token: '${{ github.token }}'
-        environment: production
-        
+        environment: production 
