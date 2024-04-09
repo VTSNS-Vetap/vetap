@@ -12,6 +12,7 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import GroupIcon from '@mui/icons-material/Group';
 import PhoneIcon from '@mui/icons-material/Phone';
+import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
@@ -42,6 +43,12 @@ const Sidebar = () => {
       }}
     >
       <List>
+      <ListItem button onClick={toggleSidebar}>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
+          {expanded && <ListItemText primary="Početna" sx={{margin:0}} onClick={() => navigate("/")}/>}
+        </ListItem>
         <ListItem button onClick={toggleSidebar}>
           <ListItemIcon>
             <WorkIcon />

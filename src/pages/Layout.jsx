@@ -7,7 +7,7 @@ const Layout = () => {
     <>
       <Header/> 
       <Sidebar />
-      <main style={{paddingTop: 80, paddingLeft: 80}}>
+      <main style={{paddingTop: 90, paddingLeft: 80}}>
         <Outlet />
       </main>
     </>
