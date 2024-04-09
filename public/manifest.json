@@ -1,6 +1,6 @@
-{
-  "short_name": "React App",
-  "name": "Create React App Sample",
+tap{
+  "short_name": "Vetap",
+  "name": "Vetap aplikacija za veterinarske ambulante",
   "icons": [
     {
       "src": "favicon.ico",
