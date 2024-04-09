@@ -12,8 +12,12 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import GroupIcon from '@mui/icons-material/Group';
 import PhoneIcon from '@mui/icons-material/Phone';
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+
+  const navigate = useNavigate();
+
   const [expanded, setExpanded] = useState(false);
 
   const toggleSidebar = () => {
@@ -42,49 +46,49 @@ const Sidebar = () => {
           <ListItemIcon>
             <WorkIcon />
           </ListItemIcon>
-          {expanded && <ListItemText primary="Zaposleni" />}
+          {expanded && <ListItemText primary="Zaposleni" sx={{margin:0}} onClick={() => navigate("/zaposleni")}/>}
         </ListItem>
         <ListItem button onClick={toggleSidebar}>
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
-          {expanded && <ListItemText primary="Pacijenti" />}
+          {expanded && <ListItemText primary="Pacijenti" sx={{margin:0}} onClick={() => navigate("/pacijenti")}/>}
         </ListItem>
         <ListItem button onClick={toggleSidebar}>
           <ListItemIcon>
             <StoreIcon />
           </ListItemIcon>
-          {expanded && <ListItemText primary="Vlasnici" />}
+          {expanded && <ListItemText primary="Vlasnici" sx={{margin:0}} onClick={() => navigate("/vlasnici")}/>}
         </ListItem>
         <ListItem button onClick={toggleSidebar}>
           <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
-          {expanded && <ListItemText primary="Kartoni" />}
+          {expanded && <ListItemText primary="Kartoni" sx={{margin:0}} onClick={() => navigate("/kartoni")}/>}
         </ListItem>
         <ListItem button onClick={toggleSidebar}>
           <ListItemIcon>
             <LocalHospitalIcon />
           </ListItemIcon>
-          {expanded && <ListItemText primary="Usluge" />}
+          {expanded && <ListItemText primary="Usluge" sx={{margin:0}} onClick={() => navigate("/usluge")}/>}
         </ListItem>
         <ListItem button onClick={toggleSidebar}>
           <ListItemIcon>
             <ShoppingCartIcon />
           </ListItemIcon>
-          {expanded && <ListItemText primary="Artikli" />}
+          {expanded && <ListItemText primary="Artikli" sx={{margin:0}} onClick={() => navigate("/artikli")}/>}
         </ListItem>
         <ListItem button onClick={toggleSidebar}>
           <ListItemIcon>
             <GroupIcon />
           </ListItemIcon>
-          {expanded && <ListItemText primary="Dobavljači" />}
+          {expanded && <ListItemText primary="Dobavljači" sx={{margin:0}} onClick={() => navigate("/dobavljaci")}/>}
         </ListItem>
         <ListItem button onClick={toggleSidebar}>
           <ListItemIcon>
             <PhoneIcon />
           </ListItemIcon>
-          {expanded && <ListItemText primary="Kontakti" />}
+          {expanded && <ListItemText primary="Kontakti" sx={{margin:0}} onClick={() => navigate("/kontakti")}/>}
         </ListItem>
       </List>
     </Drawer>
