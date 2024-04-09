@@ -1,53 +1,29 @@
-
-import React, { useState } from 'react';
-import './Header.css';
+import React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import PetsIcon from '@mui/icons-material/Pets';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Header = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [showSettings, setShowSettings] = useState(false); 
-
-  const handleLoginClick = () => {
-   
-    setLoggedIn(true);
-  };
-
-  const handleLogoutClick = () => {
-    
-    setLoggedIn(false);
-  };
-
-  const handleSettingsClick = () => {
-    
-    setShowSettings(!showSettings);
-  };
-
   return (
-    <header className="header">
-      <div className="left">
-        <img src={`${process.env.PUBLIC_URL}/favicon-32x32.png`} alt="Logo" className="logo" />
-        <span className="appName">Vetap</span>
-      </div>
-      <div className="right">
-        {loggedIn ? (
-          <div className="userPanel">
-            <button className="userButton" onClick={handleSettingsClick}>
-              <img src={`${process.env.PUBLIC_URL}/user.png`} alt="User Icon" className="userIcon" />
-              <span>Ime Korisnika</span>
-            </button>
-            {showSettings && (
-              <div className="settings">
-                {/* Opcije za podešavanje */}
-                <button onClick={handleLogoutClick}>Odjavi se</button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <button className="loginButton" onClick={handleLoginClick}>Prijavi se</button>
-        )}
-      </div>
-    </header>
+    <AppBar position="fixed">
+      <Toolbar>
+        <IconButton edge="start" color="inherit" aria-label="menu">
+          <PetsIcon />
+          <span style={{ marginLeft: '5px' }}>VETAP</span>
+        </IconButton>
+        <div style={{ flexGrow: 1 }} />
+        <IconButton color="inherit">
+          <AccountCircleIcon />
+        </IconButton>
+        <Button color="inherit">Prijavi se</Button>
+      </Toolbar>
+    </AppBar>
   );
-}
+};
 
 export default Header;
+
 
