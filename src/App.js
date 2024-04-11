@@ -13,6 +13,8 @@ import ServicesPage from './pages/ServicesPage';
 import SuppliersPage from './pages/SuppliersPage';
 import PatientRecordsPage from './pages/PatientRecordsPage';
 
+
+
 function App() {
 
   const createRouter = () => createHashRouter([
