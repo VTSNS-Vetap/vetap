@@ -1,0 +1,28 @@
+on:
+  push:
+    branches:
+      - "main" # change to the branch you wish to deploy from
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  deployments: write
+
+jobs:
+  deploy:
+    name: Deploy Vetap to GitHub pages
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: bitovi/github-actions-react-to-github-pages@v1.2.2
+      with:
+        path: build
+    
+    - uses: chrnorm/deployment-action@v2
+      name: Create GitHub deployment
+      id: deployment
+      with:
+        token: '${{ github.token }}'
+        environment: production 

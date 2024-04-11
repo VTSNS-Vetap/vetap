@@ -6,9 +6,8 @@ const Layout = () => {
   return (
     <>
       <Header/> 
-      <hr/>
       <Sidebar />
-      <main>
+      <main style={{paddingTop: 80, paddingLeft: 56}}>
         <Outlet />
       </main>
     </>
