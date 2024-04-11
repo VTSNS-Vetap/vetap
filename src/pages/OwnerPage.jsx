@@ -1,33 +1,39 @@
-import React ,{useState} from "react";
+import React ,{useEffect, useState} from "react";
 import { Box,Button,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,Paper } from '@mui/material';
 
 const OwnerPage = () => {
-  const [owners,setOwner]=useState([        
-    {
-      id:1,
-      name:"Milan",
-      surname:"Test",
-      jmbg:"1212122222"
-    },
-    {
-      id:2,
-      name:"Ivan",
-      surname:"Test",
-      jmbg:"12121212123"
-    },
-    {
-      id:3,
-      name:"Boško",
-      surname:"Test",
-      jmbg:"12121212123"
-    },
-    {
-      id:4,
-      name:"Nebojša",
-      surname:"Test",
-      jmbg:"12121212123"
-    }
-    ]);
+  const [owners,setOwner]=useState();
+
+
+    useEffect(() => {
+      setOwner([        
+        {
+          id:1,
+          name:"Milan",
+          surname:"Test",
+          jmbg:"1212122222"
+        },
+        {
+          id:2,
+          name:"Ivan",
+          surname:"Test",
+          jmbg:"12121212123"
+        },
+        {
+          id:3,
+          name:"Boško",
+          surname:"Test",
+          jmbg:"12121212123"
+        },
+        {
+          id:4,
+          name:"Nebojša",
+          surname:"Test",
+          jmbg:"12121212123"
+        }
+        ])
+    }, [])
+    
   const add = () => {alert('Dodavanje vlasnika')}
   const edit = () => {alert('Izmena vlasnika')}
   const erase = () => {alert('Brisanje vlasnika')}
@@ -54,7 +60,7 @@ const OwnerPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {owners.map((owner,index) => (
+            {owners && owners.map((owner,index) => (
               <TableRow key={owner.id}>
                 <TableCell>{index+1}.</TableCell>
                 <TableCell>{owner.name}</TableCell>

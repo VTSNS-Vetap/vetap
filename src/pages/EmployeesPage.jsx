@@ -42,7 +42,7 @@ const EmployeesPage = () => {
       }
     };  
       getZaposleni(); 
-    }, []);
+    }, [zaposleniCollectionRef]);
 
   const edit = () => {alert('Izmena')}
   const erase = () => {alert('Brisanje')}
