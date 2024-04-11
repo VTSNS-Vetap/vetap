@@ -44,8 +44,8 @@ const EmployeesPage = () => {
       getZaposleni(); 
     }, []);
 
-  const edit = () => {alert('Izmena vlasnika')}
-  const erase = () => {alert('Brisanje vlasnika')}
+  const edit = () => {alert('Izmena')}
+  const erase = () => {alert('Brisanje')}
   const [openAddModal, setOpenAddModal] = React.useState(false);
   const add = () => setOpenAddModal(true);
 
@@ -115,7 +115,7 @@ const EmployeesPage = () => {
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h4">
-          Vlasnici
+          Zaposleni
         </Typography>      
         <SearchBar onSearch={handleSearch} />
         </Box>        
@@ -182,7 +182,7 @@ const EmployeesPage = () => {
         <Fade in={openAddModal}>
           <Box sx={styleModal}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              Dodavanje novog vlasnika:
+              Novi zaposleni:
             </Typography>
             <form onSubmit={handleSubmit}>
               <FormControl sx={{ m: 0.5, width : '100%' }}>
@@ -190,7 +190,7 @@ const EmployeesPage = () => {
                 <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Prezime"  name="Prezime" value={formData.Prezime} onChange={handleChange}/>
                 <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="JMBG"  name="JMBG" value={formData.JMBG} onChange={handleChange}/>
                 <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Šifra" name="Sifra" value={formData.Sifra} onChange={handleChange} />
-                <Button type="submit" variant="contained" color="primary">DODAJ</Button>
+                <Button type="submit" variant="contained" color="primary">SAČUVAJ</Button>
               </FormControl>
             </form>
           </Box>
