@@ -6,12 +6,14 @@ import { RouterProvider, createHashRouter } from 'react-router-dom';
 import ArticlePage from './pages/ArticlePage';
 import CompanyPage from './pages/CompanyPage';
 import ContactPage from './pages/ContactPage';
-import EmpployeesPage from './pages/EmployeesPage';
+import EmployeesPage from './pages/EmployeesPage';
 import OwnerPage from './pages/OwnerPage';
 import PatientPage from './pages/PatientPage';
 import ServicesPage from './pages/ServicesPage';
 import SuppliersPage from './pages/SuppliersPage';
 import PatientRecordsPage from './pages/PatientRecordsPage';
+
+
 
 function App() {
 
@@ -41,7 +43,7 @@ function App() {
         },
         {
           path: 'zaposleni',
-          element: <EmpployeesPage />,
+          element: <EmployeesPage />,
         },
         {
           path: 'vlasnici',
