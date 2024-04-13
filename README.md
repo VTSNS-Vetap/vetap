@@ -17,4 +17,5 @@ Sa Vetap-om, imate pristup intuitivnom korisničkom interfejsu koji omogućava b
   
 6. **Kontakti:** Centralizovano mesto za čuvanje kontaktnih informacija vaših klijenata, kolega i dobavljača.
 
-Vetap je osmišljen kako bi olakšao svakodnevne zadatke veterinarskih ordinacija, pružajući efikasno i intuitivno iskustvo koje unapređuje produktivnost i kvalitet usluga. Uz Vetap, vaša veterinarska ordinacija će postati efikasnija, organizovanija i spremna da se nosi sa izazovima moderne veterinarske industrije.
+Vetap je osmišljen kako bi olakšao svakodnevne zadatke veterinarskih ordinacija, pružajući efikasno i intuitivno iskustvo koje unapređuje produktivnost i kvalitet usluga. Uz Vetap, vaša veterinarska ordinacija će postati efikasnija, organizovanija i spremna da se nosi sa izazovima moderne veterinarske industrije. 
+
