@@ -8,13 +8,12 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-
   const navigate = useNavigate();
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" sx={{ backgroundColor: 'grey' }}> {/* Postavljanje pozadine na sivu boju */}
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => navigate("/")} >
+        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => navigate("/")}>
           <PetsIcon />
           <span style={{ marginLeft: '5px' }}>VETAP</span>
         </IconButton>
@@ -29,5 +28,3 @@ const Header = () => {
 };
 
 export default Header;
-
-
