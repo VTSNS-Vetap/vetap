@@ -1,32 +1,39 @@
-import React ,{useState,useEffect} from "react";
-import { Box,Button,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,Paper, Pagination, Modal, Fade, Backdrop, FormControl, TextField } from '@mui/material';
-import { db } from '../config/Firebase'
-import { getDocs, collection, addDoc } from 'firebase/firestore'
+import React ,{useState,useEffect, useRef} from "react";
+import { Box,Button,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,Paper, Pagination} from '@mui/material';
+import { zaposleniCollectionRef  } from '../config/Firebase'
+import { getDocs, doc, deleteDoc } from 'firebase/firestore'
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchBar from '../components/SearchBar';
-
-const styleModal = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '5px solid #1565C0',
-  boxShadow: 24,
-  borderRadius: 5,
-  p: 4,
-};
+import AddNewEmployee from "../components/employees/AddNewEmployee";
+import ShowEmployee from "../components/employees/ShowEmployee";
+import EditEmployee from "../components/employees/EditEmployee";
 
 const EmployeesPage = () => {
-  const zaposleniCollectionRef = collection(db, "Zaposleni");
   const [employees,setEmployees]=useState([]);
   const [filteredRecords, setFilteredRecords] = useState(employees);
+  const [modalAddNewOpen, setAddNewModalOpen] = useState(false);
+  const [modalEditOpen, setModalEditOpen] = useState(false);
+  const [modalShowOpen, setModalShowOpen] = useState(false);
+  const [empId, setEmpId] = useState();
   const [page, setPage] = useState(1);
   const recordsPerPage = 10;
+  const getZaposleniRef = useRef(null);
 
+  const toggleAddNewModal = () => {
+    setAddNewModalOpen(!modalAddNewOpen);
+  };
+
+  const toggleEditModal = (id) => {
+    setModalEditOpen(!modalEditOpen);
+    setEmpId(id);
+  };
+  const toggleShowModal = (id) => {
+    setModalShowOpen(!modalShowOpen);
+    setEmpId(id);
+  };
+  
   useEffect(() => {
     const getZaposleni = async () => {
       try{
@@ -37,70 +44,32 @@ const EmployeesPage = () => {
         }))
         setEmployees(filteredResponse)
         setFilteredRecords(filteredResponse)
+        
       }catch(error){
         console.error('getZaposleni', error)
       }
     };  
+      getZaposleniRef.current = getZaposleni;
       getZaposleni(); 
-    }, [zaposleniCollectionRef]);
+  }, []);
 
-  const edit = () => {alert('Izmena')}
-  const erase = () => {alert('Brisanje')}
-  const [openAddModal, setOpenAddModal] = React.useState(false);
-  const add = () => setOpenAddModal(true);
-
-
-  const [formData, setFormData] = useState({
-    "Ime": "",
-    "JMBG": "",
-    "KontaktSifra": "/Kontakt/QzvocI34fTg1932fbC5m",
-    "Nadredjeni": "Zaposleni/KjNdLLsLDKlIQPf4RtDS",
-    "PocetakRada": "2024-04-09T00:00:00+02:00",
-    "PozicijaUFirmiSifra": "/PozicijaUFirmi/19RfnXopMQ2ZZk7ZwTxX",
-    "Prezime": "",
-    "Sifra": "",
-    "VeterinarskaStanicaSifra": "/VeterinarskaSta"
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      await addDoc(zaposleniCollectionRef, formData);
-      setFormData({
-        Ime: '',
-        Prezime: '',
-        JMBG: '',
-        Sifra: ''
-      });
+    const deleteEmp = async(id) => { try {
+      const docRef = doc(zaposleniCollectionRef, id);
+      await deleteDoc(docRef);
+      alert("Zaposleni je uspešno obrisan!");
+      getZaposleniRef.current(); 
     } catch (error) {
-      console.error('Error writing document: ', error);
-    }
-  };
+      console.error("Greška prilikom brisanja dokumenta:", error);
+    }}
 
-
-  const handleClose = () => setOpenAddModal(false);
-
-
-
-  const paginateRecords = () => {
-    const startIndex = (page - 1) * recordsPerPage;
-    const endIndex = startIndex + recordsPerPage;
-    return filteredRecords.slice(startIndex, endIndex);
-  };
-  const handlePageChange = (event, value) => {
-      setPage(value);
-  };
-
-  
-
+    const paginateRecords = () => {
+      const startIndex = (page - 1) * recordsPerPage;
+      const endIndex = startIndex + recordsPerPage;
+      return filteredRecords.slice(startIndex, endIndex);
+    };
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
     const handleSearch = (searchTerm) => {
       const filtered = employees.filter(employee =>
         employee.Ime.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -119,7 +88,7 @@ const EmployeesPage = () => {
         </Typography>      
         <SearchBar onSearch={handleSearch} />
         </Box>        
-        <Button variant="contained" color="primary" sx={{marginLeft:'10px;'}} onClick={add}>
+        <Button variant="contained" color="primary" sx={{marginLeft:'10px;'}} onClick={toggleAddNewModal}>
           Dodaj
         </Button>
       </Box>
@@ -144,20 +113,19 @@ const EmployeesPage = () => {
                 <TableCell sx={{ padding: '1px 14px' }}>{employee.JMBG}</TableCell>
                 <TableCell sx={{ padding: '1px 14px' }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Button sx={{ m: 0.5 }} variant="contained" color="inherit" onClick={edit} title="Prikaži">                      
+                    <Button sx={{ m: 0.5 }} variant="contained" color="inherit" onClick={() => toggleShowModal(employee.id)}  title="Prikaži">                      
                       <VisibilityIcon/>
                     </Button>
-                    <Button sx={{ m: 0.5 }} variant="contained" color="warning" onClick={edit} title="Izmeni">
+                    <Button sx={{ m: 0.5 }} variant="contained" color="warning" onClick={() => toggleEditModal(employee.id)} title="Izmeni">
                       <EditIcon/>
                     </Button>
-                    <Button sx={{ m: 0.5 }} variant="contained" color="error" onClick={erase} title="Obriši">
+                    <Button sx={{ m: 0.5 }} variant="contained" color="error" onClick={() => deleteEmp(employee.id)} title="Obriši">
                       <DeleteIcon/>
                     </Button>
                   </Box>
                 </TableCell>
               </TableRow>
-              ))}           
-            
+              ))}                       
           </TableBody>
         </Table>
       </TableContainer> 
@@ -166,36 +134,9 @@ const EmployeesPage = () => {
         page={page}
         onChange={handlePageChange}
       />
-    <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={openAddModal}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={openAddModal}>
-          <Box sx={styleModal}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Novi zaposleni:
-            </Typography>
-            <form onSubmit={handleSubmit}>
-              <FormControl sx={{ m: 0.5, width : '100%' }}>
-                <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Ime"  name="Ime" value={formData.Ime} onChange={handleChange}/>
-                <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Prezime"  name="Prezime" value={formData.Prezime} onChange={handleChange}/>
-                <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="JMBG"  name="JMBG" value={formData.JMBG} onChange={handleChange}/>
-                <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Šifra" name="Sifra" value={formData.Sifra} onChange={handleChange} />
-                <Button type="submit" variant="contained" color="primary">SAČUVAJ</Button>
-              </FormControl>
-            </form>
-          </Box>
-        </Fade>
-      </Modal>
+      <AddNewEmployee isOpen={modalAddNewOpen} toggleModal={toggleAddNewModal} getZaposleni={getZaposleniRef}/>
+      <EditEmployee isOpen={modalEditOpen} toggleModal={toggleEditModal} empId = {empId} getZaposleni={getZaposleniRef}/>
+      <ShowEmployee isOpen={modalShowOpen} toggleModal={toggleShowModal} empId = {empId}/>
     </Box>
     
   )
