@@ -19,15 +19,16 @@ const styleModal = {
   borderRadius: 5,
   p: 4,
 };
-
+const zaposleniCollectionRef = collection(db, "Zaposleni");
 const EmployeesPage = () => {
-  const zaposleniCollectionRef = collection(db, "Zaposleni");
+  
   const [employees,setEmployees]=useState([]);
   const [filteredRecords, setFilteredRecords] = useState(employees);
   const [page, setPage] = useState(1);
   const recordsPerPage = 10;
 
   useEffect(() => {
+    
     const getZaposleni = async () => {
       try{
         const response = await getDocs(zaposleniCollectionRef);
@@ -42,7 +43,7 @@ const EmployeesPage = () => {
       }
     };  
       getZaposleni(); 
-    }, [zaposleniCollectionRef]);
+    }, []);
 
   const edit = () => {alert('Izmena')}
   const erase = () => {alert('Brisanje')}
