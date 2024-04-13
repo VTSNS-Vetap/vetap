@@ -1,7 +1,7 @@
 import React ,{useState,useEffect} from "react";
 import { Box,Button,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography,Paper, Pagination, Modal, Fade, Backdrop, FormControl, TextField } from '@mui/material';
-import { db, zaposleniCollectionRef } from '../config/Firebase'
-import { getDocs, collection, addDoc } from 'firebase/firestore'
+import { zaposleniCollectionRef } from '../config/Firebase'
+import { getDocs, addDoc } from 'firebase/firestore'
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
