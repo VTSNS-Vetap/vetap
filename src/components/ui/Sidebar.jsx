@@ -5,15 +5,15 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import WorkIcon from '@mui/icons-material/Work';
-import PersonIcon from '@mui/icons-material/Person';
-import StoreIcon from '@mui/icons-material/Store';
 import DescriptionIcon from '@mui/icons-material/Description';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import GroupIcon from '@mui/icons-material/Group';
 import PhoneIcon from '@mui/icons-material/Phone';
+import BusinessIcon from '@mui/icons-material/Business';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PetsIcon from '@mui/icons-material/Pets'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
@@ -72,13 +72,13 @@ const Sidebar = () => {
         </ListItem>
         <ListItem button onClick={() => navigate("/pacijenti")}>
           <ListItemIcon>
-            <PersonIcon />
+            <PetsIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Pacijenti" sx={{margin:0}} />}
         </ListItem>
         <ListItem button onClick={() => navigate("/vlasnici")}>
           <ListItemIcon>
-            <StoreIcon />
+            <AccountCircleIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Vlasnici" sx={{margin:0}} />}
         </ListItem>
@@ -102,7 +102,7 @@ const Sidebar = () => {
         </ListItem>
         <ListItem button onClick={() => navigate("/dobavljaci")}>
           <ListItemIcon>
-            <GroupIcon />
+            <BusinessIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Dobavljači" sx={{margin:0}} />}
         </ListItem>
