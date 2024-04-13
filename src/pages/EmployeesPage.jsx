@@ -31,6 +31,7 @@ const EmployeesPage = () => {
     
     const getZaposleni = async () => {
       try{
+        console.log("getZaposleni")
         const response = await getDocs(zaposleniCollectionRef);
         const filteredResponse = response.docs.map((doc) => ({
           ...doc.data(),
