@@ -22,7 +22,7 @@ const Header = () => {
         <IconButton color="inherit">
           <AccountCircleIcon />
         </IconButton>
-        <Button color="inherit">Prijavi se</Button>
+        <Button color="inherit" onClick={() => navigate("/registration")}>Prijavi se</Button>
       </Toolbar>
     </AppBar>
   );

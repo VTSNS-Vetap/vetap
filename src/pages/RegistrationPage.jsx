@@ -1,8 +1,14 @@
+import SignIn from "../components/ui/SignIn";
+import SignUp from "../components/ui/SignUp";
+
+
 
 const RegistrationPage = () => {
   return (
     <>
-      Registracija
+    <SignIn/>
+    <SignUp/>
+
     </>
   )
 };
