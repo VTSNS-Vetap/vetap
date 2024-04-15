@@ -16,3 +16,4 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const zaposleniCollectionRef = collection(db, "Zaposleni");
+export const contactCollectionRef = collection(db, "Kontakti");
