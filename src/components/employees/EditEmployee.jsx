@@ -1,7 +1,8 @@
 import React ,{useState,useEffect} from "react";
-import { Box,Button, Typography, Modal, Fade, Backdrop, FormControl, TextField } from '@mui/material';
+import { Box,Button, Typography, Modal, Fade, Backdrop, FormControl, TextField, InputLabel, MenuItem, Select, FormControlLabel, Checkbox } from '@mui/material';
 import { zaposleniCollectionRef } from '../../config/Firebase'
 import {  doc, getDoc, setDoc } from 'firebase/firestore'
+import { Role } from "../../constants/role.constants";
 
 const styleModal = {
     position: 'absolute',
@@ -16,18 +17,23 @@ const styleModal = {
     p: 4,
   };
 
+  const defaultUser = {
+    "Ime": "",
+    "JMBG": "",
+    "KontaktSifra": "/Kontakt/QzvocI34fTg1932fbC5m",
+    "Nadredjeni": "Zaposleni/KjNdLLsLDKlIQPf4RtDS",
+    "PocetakRada": "2024-04-09T00:00:00+02:00",
+    "PozicijaUFirmiSifra": "/PozicijaUFirmi/19RfnXopMQ2ZZk7ZwTxX",
+    "Prezime": "",
+    "Email" :"",
+    "VeterinarskaStanicaSifra": "/VeterinarskaSta",
+    "Password" : "1234",
+    "PasswordReset": true,
+    "Rola" : Role.User
+    }
+
 const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
-    const [docData, setDocData] = useState({
-        "Ime": "",
-        "JMBG": "",
-        "KontaktSifra": "/Kontakt/QzvocI34fTg1932fbC5m",
-        "Nadredjeni": "Zaposleni/KjNdLLsLDKlIQPf4RtDS",
-        "PocetakRada": "2024-04-09T00:00:00+02:00",
-        "PozicijaUFirmiSifra": "/PozicijaUFirmi/19RfnXopMQ2ZZk7ZwTxX",
-        "Prezime": "",
-        "SifraZaposleni": "",
-        "VeterinarskaStanicaSifra": "/VeterinarskaSta"
-      });
+    const [docData, setDocData] = useState(defaultUser);
     
     useEffect(() => {
         if (empId) { 
@@ -37,6 +43,7 @@ const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 console.log(docSnap.data());
+              
                 setDocData(docSnap.data());
               } else {
                 console.log('Nema takvog dokumenta!');
@@ -61,19 +68,22 @@ const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
     event.preventDefault();
 
     try {
+      if (docData.Email && docData.Ime){
+
         const docRef = doc(zaposleniCollectionRef, empId)
+
         await setDoc(docRef, docData);
-        alert("Dokument uspešno ažuriran!");
-        setDocData({
-            Ime: '',
-            Prezime: '',
-            JMBG: '',
-            SifraZaposleni: ''
-        });
-        if (getZaposleni.current) {
-            getZaposleni.current();
-        }
+        
         toggleModal(empId);
+
+        if (getZaposleni.current) {
+          getZaposleni.current();
+      }
+
+        setDocData(defaultUser);
+
+   
+      }
     } catch (error) {
       console.error('Error writing document: ', error);
     }
@@ -101,16 +111,34 @@ const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
             <hr></hr>
             {docData && (
             <form onSubmit={handleSubmit}>
-                <FormControl sx={{ m: 0.5, width : '100%' }}>
-                <Typography id="transition-modal-title">Ime:</Typography>
-                <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Ime"  name="Ime" value={docData.Ime} onChange={handleChange}/>
-                <Typography id="transition-modal-title">Prezime:</Typography>
-                <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Prezime"  name="Prezime" value={docData.Prezime} onChange={handleChange}/>
-                <Typography id="transition-modal-title">JMBG:</Typography>
-                <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="JMBG"  name="JMBG" value={docData.JMBG} onChange={handleChange}/>
-                <Typography id="transition-modal-title">Sifra:</Typography>
-                <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Šifra" name="SifraZaposleni" value={docData.SifraZaposleni} onChange={handleChange} />
-                <Button type="submit" variant="contained" color="primary">SAČUVAJ</Button>
+                <FormControl sx={{ m: 1, width : '100%' }}>
+                  <InputLabel id="rola-simple-select-label">Rola</InputLabel>
+                  <Select
+                    labelId="rola-simple-select-label"
+                    value={docData.Rola}
+                    label="Rola"
+                    onChange={handleChange}
+                    name={"Rola"}
+                    sx={{ marginBottom: '5px' }}
+                  >
+                    <MenuItem value={Role.User}>Korisnik</MenuItem>
+                    <MenuItem value={Role.Admin}>Administrator</MenuItem>
+                  </Select>
+                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Email" name="Email" value={docData.Email} onChange={handleChange} />
+                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Ime"  name="Ime" value={docData.Ime} onChange={handleChange}/>
+                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Prezime"  name="Prezime" value={docData.Prezime} onChange={handleChange}/>
+                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="JMBG"  name="JMBG" value={docData.JMBG} onChange={handleChange}/>
+
+                  <FormControlLabel
+                    label="Zahtev za reset lozinke"
+                    control={
+                      <Checkbox
+                        name="PasswordReset"
+                        onChange={handleChange}
+                      />
+                    }
+                  />
+                  <Button type="submit" variant="contained" color="primary">SAČUVAJ</Button>
                 </FormControl>
             </form>
               )}

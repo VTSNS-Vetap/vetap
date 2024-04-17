@@ -12,6 +12,9 @@ import PatientPage from './pages/PatientPage';
 import ServicesPage from './pages/ServicesPage';
 import SuppliersPage from './pages/SuppliersPage';
 import PatientRecordsPage from './pages/PatientRecordsPage';
+import { PrivateRoute } from './components/ui/PrivateRoute';
+import { Role } from './constants/role.constants';
+import UnauthorizedPage from './pages/UnauthorizedPage';
 
 
 
@@ -23,51 +26,55 @@ function App() {
       element: <Layout />,
       errorElement: <ErrorPage />,
       id: 'root',
-  
       children: [
         {
           index: true,
-          element: <HomePage />,
+          element: <PrivateRoute role={Role.User}><HomePage/></PrivateRoute> ,
         },
         {
           path: 'artikli',
-          element: <ArticlePage />,
+          element: <PrivateRoute role={Role.User}><ArticlePage /></PrivateRoute>,
         },
         {
           path: 'firme',
-          element: <CompanyPage />,
+          element: <PrivateRoute role={Role.User}><CompanyPage /></PrivateRoute>,
         },
         {
           path: 'kontakti',
-          element: <ContactPage />,
+          element: <PrivateRoute role={Role.User}><ContactPage /></PrivateRoute>,
         },
         {
           path: 'zaposleni',
-          element: <EmployeesPage />,
+          element: <PrivateRoute role={Role.Admin}><EmployeesPage /></PrivateRoute>,
         },
         {
           path: 'vlasnici',
-          element: <OwnerPage />,
+          element: <PrivateRoute role={Role.User}><OwnerPage /></PrivateRoute>,
         },
         {
           path: 'pacijenti',
-          element: <PatientPage />,
+          element: <PrivateRoute role={Role.User}><PatientPage /></PrivateRoute>,
         },
         {
           path: 'kartoni',
-          element: <PatientRecordsPage />,
+          element: <PrivateRoute role={Role.User}><PatientRecordsPage /></PrivateRoute>,
         },
         {
-          path: 'registration',
+          path: 'prijava',
           element: <RegistrationPage />,
         },
         {
           path: 'usluge',
-          element: <ServicesPage />,
+          element: <PrivateRoute role={Role.User}><ServicesPage /></PrivateRoute>,
         },
         {
           path: 'dobavljaci',
-          element: <SuppliersPage />,
+          element: <PrivateRoute role={Role.User}><SuppliersPage /></PrivateRoute>,
+        }
+        ,
+        {
+          path: 'unauthorized',
+          element: <UnauthorizedPage/>,
         }
       ],
     }

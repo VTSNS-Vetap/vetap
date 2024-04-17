@@ -76,7 +76,8 @@ const EmployeesPage = () => {
       const filtered = employees.filter(employee =>
         employee.Ime.toLowerCase().includes(searchTerm.toLowerCase()) ||
         employee.Prezime.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.JMBG.toLowerCase().includes(searchTerm.toLowerCase())
+        employee.JMBG.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        employee.Email.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredRecords(filtered);
     };
@@ -100,9 +101,9 @@ const EmployeesPage = () => {
           <TableHead>
             <TableRow>
               <TableCell>Redni broj</TableCell>
+              <TableCell>Email</TableCell>
               <TableCell>Ime</TableCell>
               <TableCell>Prezime</TableCell>
-              <TableCell>Jmbg</TableCell>
               <TableCell style={{ width: '180px' }}></TableCell>
             </TableRow>
           </TableHead>
@@ -110,9 +111,9 @@ const EmployeesPage = () => {
             {paginateRecords().map((employee,index) => (
               <TableRow key={index}>
                 <TableCell sx={{ padding: '1px 14px' }}>{(page - 1) * recordsPerPage + index + 1}.</TableCell>
+                <TableCell sx={{ padding: '1px 14px' }}>{employee.Email}</TableCell>
                 <TableCell sx={{ padding: '1px 14px' }}>{employee.Ime}</TableCell>
                 <TableCell sx={{ padding: '1px 14px' }}>{employee.Prezime}</TableCell>
-                <TableCell sx={{ padding: '1px 14px' }}>{employee.JMBG}</TableCell>
                 <TableCell sx={{ padding: '1px 14px' }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button sx={{ m: 0.5 }} variant="contained" color="inherit" onClick={() => toggleShowModal(employee.id)}  title="Prikaži">                      
