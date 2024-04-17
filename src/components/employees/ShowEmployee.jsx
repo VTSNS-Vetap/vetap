@@ -60,6 +60,9 @@ const ShowEmployee = ({ isOpen, toggleModal, empId }) => {
             </Typography>
             {docData && (
             <Paper elevation={3} style={{ padding: 20 }}>
+              <Typography variant="body1" gutterBottom>
+                    <strong>Email:</strong> {docData.Email}
+                </Typography>
                 <Typography variant="body1" gutterBottom>
                     <strong>Ime:</strong> {docData.Ime}
                 </Typography>

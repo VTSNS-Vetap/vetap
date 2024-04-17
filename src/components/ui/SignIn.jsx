@@ -3,37 +3,65 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { userService } from '../../services/user.service';
+import { useNavigate } from 'react-router-dom';
 
 function SignIn() {
+
+  const navigate = useNavigate();
+
   const [loginMessage, setLoginMessage] = useState('');
+  const [passwordReset, setPasswordReset] = useState(false);
+  const [userId, setUserId] = useState()
+
+  const [_password, set_password] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get('email');
     const password = data.get('password');
+    const passwordConfirm = data.get('passwordConfirm');
 
-    
-    const savedUserData = localStorage.getItem('userData');
-    if (savedUserData) {
-      const userData = JSON.parse(savedUserData);
-      if (email === userData.email && password === userData.password) {
-        setLoginMessage('Uspešno ste se prijavili na VETAP!');
-      } else {
-        setLoginMessage('Pogrešna e-mail adresa ili lozinka.');
+    if (!email.trim() && !password.trim()) return;
+
+    if (password && passwordConfirm && passwordReset && userId){
+      if ( password === passwordConfirm){
+       let isDone =  userService.updatePassword(userId, password)
+       if (isDone){
+        setPasswordReset(false)
+        set_password("")
+       }
       }
-    } else {
-      setLoginMessage('Nema registrovanog korisnika sa unetim podacima.');
+      else {
+        setLoginMessage('Šifre se ne poklapaju.')
+        return;
+      }
     }
+
+    userService.login(email, password)
+    .then((response) => {
+      
+      if (response && response.PasswordReset){
+        setPasswordReset(true);
+        set_password("")
+        setUserId(response.Id)
+      } else {
+      navigate("/")
+      }
+    })
+    .catch(() => {
+      setLoginMessage('Pogrešna e-mail adresa ili lozinka.');
+    }
+  )
   };
+
 
   return (
     <ThemeProvider theme={createTheme()}>
@@ -51,7 +79,7 @@ function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            VETAP PRIJAVA
+          { passwordReset ?  "ZAHTEV ZA PROMENU LOZINKE" :  "VETAP PRIJAVA"} 
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -69,22 +97,30 @@ function SignIn() {
               required
               fullWidth
               name="password"
-              label="Vaša lozinka"
+              label= { passwordReset ? "Unesi novu lozinku" :  "Vaša lozinka"}
               type="password"
-              id="password"
+              value={_password}
               autoComplete="current-password"
+              onChange={(e) => set_password(e.target.value)}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Zapamti"
+            { passwordReset && <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="passwordConfirm"
+              label="Ponovi novu lozinku"
+              type="password"
+              autoComplete=""
             />
+            }
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              PRIJAVA
+              { passwordReset ? "POTVRDI" : "PRIJAVA" }
             </Button>
             <Typography variant="body1" color="text.primary" align="center">
               {loginMessage}
