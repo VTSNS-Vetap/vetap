@@ -17,7 +17,7 @@ const Header = () => {
     navigate("/prijava")
   }
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: 'grey' }}> {/* Postavljanje pozadine na sivu boju */}
+    <AppBar position="fixed"> 
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => navigate("/")}>
           <PetsIcon />
