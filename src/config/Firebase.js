@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from 'firebase/firestore'
+import { collection,getFirestore } from 'firebase/firestore'
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -15,3 +15,5 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const zaposleniCollectionRef = collection(db, "Zaposleni");
+export const contactCollectionRef = collection(db, "Kontakti");

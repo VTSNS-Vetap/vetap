@@ -6,11 +6,17 @@ import Button from '@mui/material/Button';
 import PetsIcon from '@mui/icons-material/Pets';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from "react-router-dom";
+import { userService } from '../../services/user.service';
 
 const Header = () => {
 
   const navigate = useNavigate();
+  const user = userService.user();  
 
+  const logoutHandler = () => {
+    userService.logout();
+    navigate("/prijava")
+  }
   return (
     <AppBar position="fixed">
       <Toolbar>
@@ -20,9 +26,11 @@ const Header = () => {
         </IconButton>
         <div style={{ flexGrow: 1 }} />
         <IconButton color="inherit">
+          {user && <span style={{marginRight: '5px', fontSize: '15pt'}}>{user.ime} </span>}
           <AccountCircleIcon />
         </IconButton>
-        <Button color="inherit" onClick={() => navigate("/registration")}>Prijavi se</Button>
+        {!user && <Button color="inherit" onClick={() => navigate("/prijava")}>Prijavi se</Button>}
+        {user && <Button color="inherit" onClick={logoutHandler}>Odjavi se</Button>}
       </Toolbar>
     </AppBar>
   );

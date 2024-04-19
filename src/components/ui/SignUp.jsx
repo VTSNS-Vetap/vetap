@@ -1,11 +1,10 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -13,35 +12,46 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        VETAP
-      </Link>{' '} 
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+function SignUp() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    allowExtraEmails: false,
+  });
+  const [registrationMessage, setRegistrationMessage] = useState('');
 
-// TODO remove, this demo shouldn't need to reset the theme.
+  useEffect(() => {
+    const savedUserData = localStorage.getItem('userData');
+    if (savedUserData) {
+      setFormData(JSON.parse(savedUserData));
+    }
+  }, []);
 
-const defaultTheme = createTheme();
-
-export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const newFormData = {
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
+      allowExtraEmails: data.get('allowExtraEmails') === 'on',
+    };
+    localStorage.setItem('userData', JSON.stringify(newFormData));
+    setRegistrationMessage('Uspešno ste se registrovali na VETAP!');
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      allowExtraEmails: false,
     });
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={createTheme()}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -70,6 +80,8 @@ export default function SignUp() {
                   id="firstName"
                   label="Vaše ime"
                   autoFocus
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -80,6 +92,8 @@ export default function SignUp() {
                   label="Vaše prezime"
                   name="lastName"
                   autoComplete="family-name"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -90,6 +104,8 @@ export default function SignUp() {
                   label="Vaša e-mail adresa"
                   name="email"
                   autoComplete="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -101,12 +117,16 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  control={<Checkbox name="allowExtraEmails" color="primary" />}
                   label="Saglasan sam da dobijam najnovije informacije u vezi VETAP aplikacije"
+                  checked={formData.allowExtraEmails}
+                  onChange={(e) => setFormData({ ...formData, allowExtraEmails: e.target.checked })}
                 />
               </Grid>
             </Grid>
@@ -118,18 +138,19 @@ export default function SignUp() {
             >
               REGISTRACIJA
             </Button>
+            <Typography variant="body1" color="text.primary" align="center">
+              {registrationMessage}
+            </Typography>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/src/SingIn.js/" variant="body2">
-                  Već imate kreiran nalog? Prijavite se!
-                  
-                </Link>
+                
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );
 }
+
+export default SignUp;
