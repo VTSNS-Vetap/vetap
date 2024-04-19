@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { userService } from '../../services/user.service';
 
 const Header = () => {
-
   const navigate = useNavigate();
   const user = userService.user();  
 
@@ -18,9 +17,9 @@ const Header = () => {
     navigate("/prijava")
   }
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" sx={{ backgroundColor: 'grey' }}> {/* Postavljanje pozadine na sivu boju */}
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => navigate("/")} >
+        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => navigate("/")}>
           <PetsIcon />
           <span style={{ marginLeft: '5px' }}>VETAP</span>
         </IconButton>
@@ -37,5 +36,3 @@ const Header = () => {
 };
 
 export default Header;
-
-
