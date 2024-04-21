@@ -17,6 +17,7 @@ export const PrivateRoute = ({role, children}) => {
         if (!(role === user?.role || user?.role === Role.Admin)){
             navigate("/unauthorized")
         }
+    }
     },[user, role, navigate])
    
     return ( 
