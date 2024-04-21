@@ -28,8 +28,8 @@ const Header = () => {
           {user && <span style={{marginRight: '5px', fontSize: '15pt'}}>{user.ime} </span>}
           <AccountCircleIcon />
         </IconButton>
-        {!user && <Button color="inherit" onClick={() => navigate("/prijava")}>Prijavi se</Button>}
-        {user && <Button color="inherit" onClick={logoutHandler}>Odjavi se</Button>}
+        {!user && <Button  name="signInBtn" color="inherit" onClick={() => navigate("/prijava")}>Prijavi se</Button>}
+        {user && <Button id='signOutBtn' color="inherit" onClick={logoutHandler}>Odjavi se</Button>}
       </Toolbar>
     </AppBar>
   );

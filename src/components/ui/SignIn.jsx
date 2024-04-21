@@ -86,17 +86,17 @@ function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
               label="Vaša e-mail adresa"
-              name="email"
+              name="signInEmail"
               autoComplete="email"
               autoFocus
             />
             <TextField
+
               margin="normal"
               required
               fullWidth
-              name="password"
+              name="signInPassword"
               label= { passwordReset ? "Unesi novu lozinku" :  "Vaša lozinka"}
               type="password"
               value={_password}
@@ -107,7 +107,7 @@ function SignIn() {
               margin="normal"
               required
               fullWidth
-              name="passwordConfirm"
+              name="signInPasswordConfirm"
               label="Ponovi novu lozinku"
               type="password"
               autoComplete=""
@@ -115,6 +115,7 @@ function SignIn() {
             }
 
             <Button
+              name="signInBtnSubmit"
               type="submit"
               fullWidth
               variant="contained"
