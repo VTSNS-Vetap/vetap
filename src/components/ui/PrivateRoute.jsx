@@ -13,7 +13,7 @@ export const PrivateRoute = ({role, children}) => {
         if (!user){
             userService.logout()
             navigate("/prijava")
-        }       
+
         if (!(role === user?.role || user?.role === Role.Admin)){
             navigate("/unauthorized")
         }

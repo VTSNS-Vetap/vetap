@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { userService } from '../../services/user.service';
 
 const Header = () => {
-
   const navigate = useNavigate();
   const user = userService.user();  
 
@@ -18,9 +17,9 @@ const Header = () => {
     navigate("/prijava")
   }
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed"> 
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => navigate("/")} >
+        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => navigate("/")}>
           <PetsIcon />
           <span style={{ marginLeft: '5px' }}>VETAP</span>
         </IconButton>
@@ -29,13 +28,11 @@ const Header = () => {
           {user && <span style={{marginRight: '5px', fontSize: '15pt'}}>{user.ime} </span>}
           <AccountCircleIcon />
         </IconButton>
-        {!user && <Button color="inherit" onClick={() => navigate("/prijava")}>Prijavi se</Button>}
-        {user && <Button color="inherit" onClick={logoutHandler}>Odjavi se</Button>}
+        {!user && <Button  name="signInBtn" color="inherit" onClick={() => navigate("/prijava")}>Prijavi se</Button>}
+        {user && <Button id='signOutBtn' color="inherit" onClick={logoutHandler}>Odjavi se</Button>}
       </Toolbar>
     </AppBar>
   );
 };
 
 export default Header;
-
-

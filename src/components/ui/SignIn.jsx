@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { userService } from '../../services/user.service';
 import { useNavigate } from 'react-router-dom';
+import { red } from '@mui/material/colors';
 
 function SignIn() {
 
@@ -25,9 +26,9 @@ function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email');
-    const password = data.get('password');
-    const passwordConfirm = data.get('passwordConfirm');
+    const email = data.get('signInEmail');
+    const password = data.get('signInPassword');
+    const passwordConfirm = data.get('signInPasswordConfirm');
 
     if (!email.trim() && !password.trim()) return;
 
@@ -78,7 +79,7 @@ function SignIn() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography name="signInFormTitle" component="h1" variant="h5">
           { passwordReset ?  "ZAHTEV ZA PROMENU LOZINKE" :  "VETAP PRIJAVA"} 
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -86,17 +87,17 @@ function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
               label="Vaša e-mail adresa"
-              name="email"
+              name="signInEmail"
               autoComplete="email"
               autoFocus
             />
             <TextField
+
               margin="normal"
               required
               fullWidth
-              name="password"
+              name="signInPassword"
               label= { passwordReset ? "Unesi novu lozinku" :  "Vaša lozinka"}
               type="password"
               value={_password}
@@ -107,7 +108,7 @@ function SignIn() {
               margin="normal"
               required
               fullWidth
-              name="passwordConfirm"
+              name="signInPasswordConfirm"
               label="Ponovi novu lozinku"
               type="password"
               autoComplete=""
@@ -115,6 +116,7 @@ function SignIn() {
             }
 
             <Button
+              name="signInBtnSubmit"
               type="submit"
               fullWidth
               variant="contained"
@@ -122,7 +124,7 @@ function SignIn() {
             >
               { passwordReset ? "POTVRDI" : "PRIJAVA" }
             </Button>
-            <Typography variant="body1" color="text.primary" align="center">
+            <Typography name="signInWorningMessage" variant="body1" color={red["A700"]} align="center">
               {loginMessage}
             </Typography>
             <Grid container>

@@ -5,15 +5,15 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import WorkIcon from '@mui/icons-material/Work';
-import PersonIcon from '@mui/icons-material/Person';
-import StoreIcon from '@mui/icons-material/Store';
 import DescriptionIcon from '@mui/icons-material/Description';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import GroupIcon from '@mui/icons-material/Group';
 import PhoneIcon from '@mui/icons-material/Phone';
+import BusinessIcon from '@mui/icons-material/Business';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import PetsIcon from '@mui/icons-material/Pets'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import { Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
@@ -58,55 +58,55 @@ const Sidebar = () => {
             sx={{alignSelf: "center",  color: "rgba(0, 0, 0, 0.54)",
             ...(!expanded && { display: 'none' }),}}/>
       <List>
-        <ListItem button onClick={() => navigate("/")}>
+        <ListItem name="sideBarHomePage" button onClick={() => navigate("/")}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Početna" sx={{margin:0}} />}
         </ListItem>
-        <ListItem button onClick={() => navigate("/zaposleni")}>
+        <ListItem  name="sideBarEmployees" button onClick={() => navigate("/zaposleni")}>
           <ListItemIcon>
             <WorkIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Zaposleni" sx={{margin:0}} />}
         </ListItem>
-        <ListItem button onClick={() => navigate("/pacijenti")}>
+        <ListItem name="sideBarPatients"  button onClick={() => navigate("/pacijenti")}>
           <ListItemIcon>
-            <PersonIcon />
+            <PetsIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Pacijenti" sx={{margin:0}} />}
         </ListItem>
-        <ListItem button onClick={() => navigate("/vlasnici")}>
+        <ListItem name="sideBarOwners" button onClick={() => navigate("/vlasnici")}>
           <ListItemIcon>
-            <StoreIcon />
+            <AccountCircleIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Vlasnici" sx={{margin:0}} />}
         </ListItem>
-        <ListItem button onClick={() => navigate("/kartoni")}>
+        <ListItem name="sideBarPatientRecords" button onClick={() => navigate("/kartoni")}>
           <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Kartoni" sx={{margin:0}} />}
         </ListItem>
-        <ListItem button onClick={() => navigate("/usluge")}>
+        <ListItem name="sideBarServices" button onClick={() => navigate("/usluge")}>
           <ListItemIcon>
             <LocalHospitalIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Usluge" sx={{margin:0}} />}
         </ListItem>
-        <ListItem button onClick={() => navigate("/artikli")}>
+        <ListItem name="sideBarArticles" button onClick={() => navigate("/artikli")}>
           <ListItemIcon>
             <ShoppingCartIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Artikli" sx={{margin:0}} />}
         </ListItem>
-        <ListItem button onClick={() => navigate("/dobavljaci")}>
+        <ListItem name="sideBarSuppliers" button onClick={() => navigate("/dobavljaci")}>
           <ListItemIcon>
-            <GroupIcon />
+            <BusinessIcon />
           </ListItemIcon>
           {expanded && <ListItemText primary="Dobavljači" sx={{margin:0}} />}
         </ListItem>
-        <ListItem button onClick={() => navigate("/kontakti")}>
+        <ListItem name="sideBarContacts" button onClick={() => navigate("/kontakti")}>
           <ListItemIcon>
             <PhoneIcon />
           </ListItemIcon>
