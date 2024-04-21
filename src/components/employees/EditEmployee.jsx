@@ -3,7 +3,7 @@ import { Box,Button, Typography, Modal, Fade, Backdrop, FormControl, TextField, 
 import { zaposleniCollectionRef } from '../../config/Firebase'
 import {  doc, getDoc, setDoc } from 'firebase/firestore'
 import { Role } from "../../constants/role.constants";
-
+import CustomConfirm from "../ui/CustomConfirm";
 const styleModal = {
     position: 'absolute',
     top: '50%',
@@ -34,7 +34,8 @@ const styleModal = {
 
 const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
     const [docData, setDocData] = useState(defaultUser);
-    
+    const [confirmOpen, setConfirmOpen] = useState(false);
+
     useEffect(() => {
         if (empId) { 
         const fetchData = async () => {
@@ -42,8 +43,6 @@ const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
             const docRef = doc(zaposleniCollectionRef, empId)
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
-                console.log(docSnap.data());
-              
                 setDocData(docSnap.data());
               } else {
                 console.log('Nema takvog dokumenta!');
@@ -63,31 +62,31 @@ const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
         [e.target.name]: e.target.value
         });
     };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      if (docData.Email && docData.Ime){
-
-        const docRef = doc(zaposleniCollectionRef, empId)
-
-        await setDoc(docRef, docData);
-        
-        toggleModal(empId);
-
-        if (getZaposleni.current) {
-          getZaposleni.current();
+    const handleConfirmClose = () => {
+      setConfirmOpen(false);
+    };
+    
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      setConfirmOpen(true);
+    };
+    
+    const handleConfirmed = async () => {  
+      try {
+        if (docData.Email && docData.Ime){
+          const docRef = doc(zaposleniCollectionRef, empId)
+          await setDoc(docRef, docData);        
+          toggleModal(empId);
+          if (getZaposleni.current) {
+            getZaposleni.current();
+          }
+          setDocData(defaultUser);   
+          setConfirmOpen(false);
+        }
+      } catch (error) {
+        console.error('Error writing document: ', error);
       }
-
-        setDocData(defaultUser);
-
-   
-      }
-    } catch (error) {
-      console.error('Error writing document: ', error);
-    }
-  };
+    };
 
     return (
         <Modal
@@ -142,8 +141,16 @@ const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
                 </FormControl>
             </form>
               )}
+              <CustomConfirm open={confirmOpen}
+              onClose={handleConfirmClose}
+              onConfirm={handleConfirmed}
+              title="Potvrda"
+              message="Da li ste sigurni da želite da sačuvate izmene?"
+            />
             </Box>
+            
         </Fade>
+        
       </Modal>
     )
   };

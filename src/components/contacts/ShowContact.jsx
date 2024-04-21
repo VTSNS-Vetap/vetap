@@ -34,6 +34,7 @@ const ShowEmployee = ({ isOpen, toggleModal, contactId }) => {
             const docRef = doc(contactCollectionRef, contactId)
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
+                console.log(docSnap.data())
                 setDocData(docSnap.data());
               } else {
                 console.log('Nema takvog dokumenta!');

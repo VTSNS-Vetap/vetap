@@ -1,5 +1,7 @@
-import React ,{useState} from "react";
+import React ,{useState, useRef} from "react";
 import { Box,Button, Typography, Modal, Fade, Backdrop, FormControl, TextField, InputLabel, Select, MenuItem } from '@mui/material';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { zaposleniCollectionRef } from '../../config/Firebase'
 import { addDoc } from 'firebase/firestore'
 import { Role } from "../../constants/role.constants";
@@ -9,7 +11,7 @@ const styleModal = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 750,
     bgcolor: 'background.paper',
     border: '5px solid #1565C0',
     boxShadow: 24,
@@ -18,29 +20,33 @@ const styleModal = {
   };
 
 const AddNewEmployee = ({ isOpen, toggleModal, getZaposleni }) => {
+      const [selectedDate, setSelectedDate] = useState(null);
 
+      const handleDateChange = (date) => {
+          setSelectedDate(date);
+      };
     const [formData, setFormData] = useState({
         "Ime": "",
         "JMBG": "",
         "KontaktSifra": "/Kontakt/QzvocI34fTg1932fbC5m",
         "Nadredjeni": "Zaposleni/KjNdLLsLDKlIQPf4RtDS",
-        "PocetakRada": "2024-04-09T00:00:00+02:00",
+        "PocetakRada": selectedDate,
         "PozicijaUFirmiSifra": "/PozicijaUFirmi/19RfnXopMQ2ZZk7ZwTxX",
         "Prezime": "",
         "Email" :"",
         "VeterinarskaStanicaSifra": "/VeterinarskaSta",
         "Password" : "1234",
         "PasswordReset": true,
-        "Rola" : Role.User
+        "Rola" : Role.User,
+        "Telefon": ''
       });
-
+      
     const handleChange = (e) => {
         setFormData({
         ...formData,
         [e.target.name]: e.target.value
         });
     };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -61,12 +67,19 @@ const AddNewEmployee = ({ isOpen, toggleModal, getZaposleni }) => {
         JMBG: '',
         Email: '',
         Rola: Role.User,
+        Telefon: '',
+        PocetakRada: ''
       });
     } catch (error) {
       console.error('Error writing document: ', error);
     }
   };
-
+  const datePickerRef = useRef(null);
+  const handleClick = () => {
+    if (datePickerRef.current) {
+        datePickerRef.current.setOpen(true); 
+    }
+  };
     return (
         <Modal
         aria-labelledby="transition-modal-title"
@@ -87,28 +100,70 @@ const AddNewEmployee = ({ isOpen, toggleModal, getZaposleni }) => {
             Novi zaposleni:
           </Typography>
           <form onSubmit={handleSubmit}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', width: '100%' }}>
+            <Box sx={{ p:1 }}>
+              <FormControl sx={{ m: 1, width : '100%' }}>
+                <InputLabel id="rola-simple-select-label">Rola</InputLabel>
+                <Select
+                  labelId="rola-simple-select-label"
+                  value={formData.Rola}
+                  label="Rola"
+                  onChange={handleChange}
+                  name={"Rola"}
+                >
+                  <MenuItem value={'user'}>Korisnik</MenuItem>
+                  <MenuItem value={'admin'}>Administrator</MenuItem>
+                </Select>
+              </FormControl>            
+              <FormControl sx={{ m: 1, width : '100%' }}>
+                <InputLabel id="Ime"></InputLabel>
+                <TextField labelId="Ime" label="Ime" type="text" color='primary' name="Ime" value={formData.Ime} onChange={handleChange} required/>
+              </FormControl>    
+              <FormControl sx={{ m: 1, width : '100%' }}>
+                <InputLabel id="Telefon"></InputLabel>
+                <TextField labelId="Telefon" label="Telefon" type="text" color='primary' name="Telefon" value={formData.Telefon} onChange={handleChange} required/>
+              </FormControl>          
+              <FormControl sx={{ m: 1, width : '100%' }}>
+                <InputLabel id="Adresa"></InputLabel>
+                <TextField labelId="Adresa" label="Adresa" type="text" color='primary' name="Adresa" value={formData.Adresa} onChange={handleChange} required/>
+              </FormControl> 
+            </Box>
+            <Box sx={{ p:1 }}>
+              <FormControl sx={{ m: 1, width : '100%' }}>
+                <InputLabel id="email"></InputLabel>
+                <TextField labelId="email"  label="Email" InputProps={{type: 'email'}} color='primary'  name="Email" value={formData.Email} onChange={handleChange} required/>
+              </FormControl>
+              <FormControl sx={{ m: 1, width : '100%' }}>  
+                <InputLabel id="Prezime"></InputLabel>
+                <TextField labelId="Prezime" label="Prezime" type="text" color='primary' placeholder="Prezime"  name="Prezime" value={formData.Prezime} onChange={handleChange} required/>
+              </FormControl>
+              <FormControl sx={{ m: 1, width : '100%' }}>
+                <InputLabel id="JMBG"></InputLabel>
+                <TextField labelId="JMBG" label="JMBG" type="text" color='primary' placeholder="JMBG"  name="JMBG" value={formData.JMBG} onChange={handleChange} inputProps={{ maxLength: 13, minLength: 13 }} required/>
+              </FormControl>    
+              <FormControl sx={{ m: 1, width : '100%',position: 'relative' }}>       
+                <TextField
+                    label="Datum početka rada"
+                    name="PocetakRada"
+                    value={selectedDate ? selectedDate.toLocaleDateString('sr-RS') : ''}
+                    InputProps={{ readOnly: true }}
+                    onClick={handleClick}
+                    style={{ position: 'absolute', width:'100%', zIndex:100,left: 0 }}
+                />           
+                <DatePicker
+                    selected={selectedDate}
+                    onChange={handleDateChange}
+                    dateFormat="dd/MM/yyyy"
+                    placeholderText="Select Date"
+                    ref={datePickerRef}
+                    customInput={<></>}
+                />             
+              </FormControl>        
+            </Box>
+          </Box>
             <FormControl sx={{ m: 1, width : '100%' }}>
-              <InputLabel id="rola-simple-select-label">Rola</InputLabel>
-              <Select
-                labelId="rola-simple-select-label"
-                value={formData.Rola}
-                label="Rola"
-                onChange={handleChange}
-                name={"Rola"}
-                sx={{ marginBottom: '5px' }}
-              >
-                <MenuItem value={'user'}>Korisnik</MenuItem>
-                <MenuItem value={'admin'}>Administrator</MenuItem>
-              </Select>
-              <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Email" name="Email" value={formData.Email} onChange={handleChange} />
-              <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Ime"  name="Ime" value={formData.Ime} onChange={handleChange}/>
-              <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Prezime"  name="Prezime" value={formData.Prezime} onChange={handleChange}/>
-              <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="JMBG"  name="JMBG" value={formData.JMBG} onChange={handleChange}/>
-              
-              
               <Button type="submit" variant="contained" color="primary">SAČUVAJ</Button>
             </FormControl>
-
           </form>
         </Box>
         </Fade>
