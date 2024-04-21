@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { userService } from '../../services/user.service';
 import { useNavigate } from 'react-router-dom';
+import { red } from '@mui/material/colors';
 
 function SignIn() {
 
@@ -123,7 +124,7 @@ function SignIn() {
             >
               { passwordReset ? "POTVRDI" : "PRIJAVA" }
             </Button>
-            <Typography variant="body1" color="text.primary" align="center">
+            <Typography name="signInWorningMessage" variant="body1" color={red["A700"]} align="center">
               {loginMessage}
             </Typography>
             <Grid container>
