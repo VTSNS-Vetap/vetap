@@ -25,9 +25,9 @@ function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email');
-    const password = data.get('password');
-    const passwordConfirm = data.get('passwordConfirm');
+    const email = data.get('signInEmail');
+    const password = data.get('signInPassword');
+    const passwordConfirm = data.get('signInPasswordConfirm');
 
     if (!email.trim() && !password.trim()) return;
 
@@ -78,7 +78,7 @@ function SignIn() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography name="signInFormTitle" component="h1" variant="h5">
           { passwordReset ?  "ZAHTEV ZA PROMENU LOZINKE" :  "VETAP PRIJAVA"} 
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
