@@ -20,12 +20,13 @@ const ShowEmployee = ({ isOpen, toggleModal, empId }) => {
     const [docData, setDocData] = useState(null);
     
     useEffect(() => {
-        if (empId) { 
+        if (empId && isOpen) { 
         const fetchData = async () => {
           try {
             const docRef = doc(zaposleniCollectionRef, empId)
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
+              console.log(docSnap.data())
                 setDocData(docSnap.data());
               } else {
                 console.log('Nema takvog dokumenta!');
@@ -33,11 +34,10 @@ const ShowEmployee = ({ isOpen, toggleModal, empId }) => {
           } catch (error) {
             console.error('Greška pri dohvaćanju dokumenta:', error);
           } 
-        };
-    
+        };    
         fetchData();
         }
-      }, [empId]);
+      }, [empId,isOpen]);
 
     return (
         <Modal

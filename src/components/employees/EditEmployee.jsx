@@ -1,15 +1,17 @@
-import React ,{useState,useEffect} from "react";
+import React ,{useState,useEffect, useRef} from "react";
 import { Box,Button, Typography, Modal, Fade, Backdrop, FormControl, TextField, InputLabel, MenuItem, Select, FormControlLabel, Checkbox } from '@mui/material';
 import { zaposleniCollectionRef } from '../../config/Firebase'
 import {  doc, getDoc, setDoc } from 'firebase/firestore'
 import { Role } from "../../constants/role.constants";
 import CustomConfirm from "../ui/CustomConfirm";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 const styleModal = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 750,
     bgcolor: 'background.paper',
     border: '5px solid #1565C0',
     boxShadow: 24,
@@ -29,15 +31,31 @@ const styleModal = {
     "VeterinarskaStanicaSifra": "/VeterinarskaSta",
     "Password" : "1234",
     "PasswordReset": true,
-    "Rola" : Role.User
+    "Rola" : Role.User,
+    "Adresa":"",
+    "Telefon":""
     }
 
 const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
     const [docData, setDocData] = useState(defaultUser);
     const [confirmOpen, setConfirmOpen] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date(docData.PocetakRada));
 
+    const datePickerRef = useRef(null);
+    const handleClick = () => {
+      if (datePickerRef.current) {
+          datePickerRef.current.setOpen(true); 
+      }
+    };
+    const handleDateChange = (date) => {
+      setSelectedDate(date);
+        setDocData({
+          ...docData,
+          PocetakRada: date
+          });
+    };
     useEffect(() => {
-        if (empId) { 
+        if (empId && isOpen) { 
         const fetchData = async () => {
           try {
             const docRef = doc(zaposleniCollectionRef, empId)
@@ -54,7 +72,7 @@ const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
     
         fetchData();
         }
-      }, [empId]);
+      }, [empId,isOpen]);
     
     const handleChange = (e) => {
         setDocData({
@@ -110,6 +128,8 @@ const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
             <hr></hr>
             {docData && (
             <form onSubmit={handleSubmit}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', width: '100%' }}>
+              <Box sx={{ p:1 }}>
                 <FormControl sx={{ m: 1, width : '100%' }}>
                   <InputLabel id="rola-simple-select-label">Rola</InputLabel>
                   <Select
@@ -123,12 +143,50 @@ const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
                     <MenuItem value={Role.User}>Korisnik</MenuItem>
                     <MenuItem value={Role.Admin}>Administrator</MenuItem>
                   </Select>
-                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Email" name="Email" value={docData.Email} onChange={handleChange} />
-                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Ime"  name="Ime" value={docData.Ime} onChange={handleChange}/>
-                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="Prezime"  name="Prezime" value={docData.Prezime} onChange={handleChange}/>
-                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' placeholder="JMBG"  name="JMBG" value={docData.JMBG} onChange={handleChange}/>
-
-                  <FormControlLabel
+                </FormControl>
+               
+                <FormControl sx={{ m: 1, width : '100%' }}>
+                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' label="Ime" name="Ime" value={docData.Ime} onChange={handleChange}/>
+                </FormControl>
+                <FormControl sx={{ m: 1, width : '100%' }}>
+                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' label="Adresa"  name="Adresa" value={docData.Adresa} onChange={handleChange}/>
+                </FormControl>
+                <FormControl sx={{ m: 1, width : '100%' }}>
+                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' label="Telefon"  name="Telefon" value={docData.Telefon} onChange={handleChange}/>
+                </FormControl>
+              </Box>
+              <Box sx={{ p:1 }}>
+                <FormControl sx={{ m: 1, width : '100%' }}>
+                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' label="Email" name="Email" value={docData.Email} onChange={handleChange} />
+                </FormControl>
+                <FormControl sx={{ m: 1, width : '100%' }}>
+                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' label="Prezime"   name="Prezime" value={docData.Prezime} onChange={handleChange}/>
+                </FormControl>
+                <FormControl sx={{ m: 1, width : '100%' }}>
+                  <TextField sx={{ marginBottom: '5px' }} type="text" color='primary' label="JMBG"  name="JMBG" value={docData.JMBG} onChange={handleChange}/>
+                </FormControl>
+                <FormControl sx={{ m: 1, width : '100%',position: 'relative' }}>       
+                <TextField
+                    label="Datum početka rada"
+                    name="PocetakRada"
+                    value={selectedDate ? selectedDate.toLocaleDateString('sr-RS') : ''}
+                    InputProps={{ readOnly: true }}
+                    onClick={handleClick}
+                    onChange={handleChange}
+                    style={{ position: 'absolute', width:'100%', zIndex:100,left: 0 }}
+                />           
+                <DatePicker
+                    selected={selectedDate}
+                    onChange={handleDateChange}
+                    dateFormat="dd/MM/yyyy"
+                    placeholderText="Select Date"
+                    ref={datePickerRef}
+                    customInput={<></>}
+                />             
+              </FormControl>  
+              </Box>
+            </Box>
+              <FormControlLabel
                     label="Zahtev za reset lozinke"
                     control={
                       <Checkbox
@@ -136,9 +194,9 @@ const EditEmployee = ({ isOpen, toggleModal, empId, getZaposleni }) => {
                         onChange={handleChange}
                       />
                     }
-                  />
-                  <Button type="submit" variant="contained" color="primary">SAČUVAJ</Button>
-                </FormControl>
+                    />
+              <Button type="submit" variant="contained" color="primary" sx={{width:'100%'}}>SAČUVAJ</Button>
+                
             </form>
               )}
               <CustomConfirm open={confirmOpen}
