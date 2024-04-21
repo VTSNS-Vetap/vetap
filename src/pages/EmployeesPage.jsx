@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchBar from '../components/SearchBar';
+import CustomConfirm from '../components/ui/CustomConfirm';
 import AddNewEmployee from "../components/employees/AddNewEmployee";
 import ShowEmployee from "../components/employees/ShowEmployee";
 import EditEmployee from "../components/employees/EditEmployee";
@@ -20,6 +21,8 @@ const EmployeesPage = () => {
   const [page, setPage] = useState(1);
   const recordsPerPage = 10;
   const getZaposleniRef = useRef(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   const toggleAddNewModal = () => {
     setAddNewModalOpen(!modalAddNewOpen);
@@ -29,16 +32,42 @@ const EmployeesPage = () => {
     setModalEditOpen(!modalEditOpen);
     setEmpId(id);
   };
+
   const toggleShowModal = (id) => {
     setModalShowOpen(!modalShowOpen);
     setEmpId(id);
   };
-  
-  useEffect(() => {
-    
+
+  const deleteEmp = async (id) => {
+    try {
+      setDeleteId(id);
+      setConfirmOpen(true);
+    } catch (error) {
+      console.error("Greška prilikom brisanja dokumenta:", error);
+    }
+  };
+
+  const handleDeleteConfirmClose = () => {
+    setConfirmOpen(false);
+    setDeleteId(null);
+  };
+
+  const handleDeleteConfirmed = async () => {
+    try {
+      const docRef = doc(zaposleniCollectionRef, deleteId);
+      await deleteDoc(docRef);
+      alert("Zaposleni je uspešno obrisan!");
+      getZaposleniRef.current();
+      setConfirmOpen(false);
+      setDeleteId(null);
+    } catch (error) {
+      console.error("Greška prilikom brisanja dokumenta:", error);
+    }
+  };
+
+  useEffect(() => {    
     const getZaposleni = async () => {
       try{
-        console.log("getZaposleni")
         const response = await getDocs(zaposleniCollectionRef);
         const filteredResponse = response.docs.map((doc) => ({
           ...doc.data(),
@@ -55,32 +84,25 @@ const EmployeesPage = () => {
       getZaposleni(); 
   }, []);
 
-    const deleteEmp = async(id) => { try {
-      const docRef = doc(zaposleniCollectionRef, id);
-      await deleteDoc(docRef);
-      alert("Zaposleni je uspešno obrisan!");
-      getZaposleniRef.current(); 
-    } catch (error) {
-      console.error("Greška prilikom brisanja dokumenta:", error);
-    }}
+  const paginateRecords = () => {
+    const startIndex = (page - 1) * recordsPerPage;
+    const endIndex = startIndex + recordsPerPage;
+    return filteredRecords.slice(startIndex, endIndex);
+  };
 
-    const paginateRecords = () => {
-      const startIndex = (page - 1) * recordsPerPage;
-      const endIndex = startIndex + recordsPerPage;
-      return filteredRecords.slice(startIndex, endIndex);
-    };
-    const handlePageChange = (event, value) => {
-        setPage(value);
-    };
-    const handleSearch = (searchTerm) => {
-      const filtered = employees.filter(employee =>
-        employee.Ime.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.Prezime.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.JMBG.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employee.Email.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredRecords(filtered);
-    };
+  const handlePageChange = (event, value) => {
+      setPage(value);
+  };
+  
+  const handleSearch = (searchTerm) => {
+    const filtered = employees.filter(employee =>
+      employee.Ime.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.Prezime.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.JMBG.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.Email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredRecords(filtered);
+  };
     
   return (
     <Box sx={{ margin: '30px'}}>            
@@ -136,6 +158,12 @@ const EmployeesPage = () => {
         count={Math.ceil(filteredRecords.length / recordsPerPage)}
         page={page}
         onChange={handlePageChange}
+      />
+      <CustomConfirm open={confirmOpen}
+        onClose={handleDeleteConfirmClose}
+        onConfirm={handleDeleteConfirmed}
+        title="Potvrda"
+        message="Da li ste sigurni da želite da obrišete zaposlenog?"
       />
       <AddNewEmployee isOpen={modalAddNewOpen} toggleModal={toggleAddNewModal} getZaposleni={getZaposleniRef}/>
       <EditEmployee isOpen={modalEditOpen} toggleModal={toggleEditModal} empId = {empId} getZaposleni={getZaposleniRef}/>
