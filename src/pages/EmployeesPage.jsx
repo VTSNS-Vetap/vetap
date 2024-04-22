@@ -111,9 +111,9 @@ const EmployeesPage = () => {
         <Typography variant="h4">
           Zaposleni
         </Typography>      
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar name="employeesSearchInput" onSearch={handleSearch} />
         </Box>        
-        <Button variant="contained" color="primary" sx={{marginLeft:'10px;'}} onClick={toggleAddNewModal}>
+        <Button name="employeesAddBtn" variant="contained" color="primary" sx={{marginLeft:'10px;'}} onClick={toggleAddNewModal}>
           Dodaj
         </Button>
       </Box>
@@ -131,7 +131,7 @@ const EmployeesPage = () => {
           </TableHead>
           <TableBody>          
             {paginateRecords().map((employee,index) => (
-              <TableRow key={index}>
+              <TableRow id={employee.id} key={index}>
                 <TableCell sx={{ padding: '1px 14px' }}>{(page - 1) * recordsPerPage + index + 1}.</TableCell>
                 <TableCell sx={{ padding: '1px 14px' }}>{employee.Email}</TableCell>
                 <TableCell sx={{ padding: '1px 14px' }}>{employee.Ime}</TableCell>
@@ -144,7 +144,7 @@ const EmployeesPage = () => {
                     <Button sx={{ m: 0.5 }} variant="contained" color="warning" onClick={() => toggleEditModal(employee.id)} title="Izmeni">
                       <EditIcon/>
                     </Button>
-                    <Button sx={{ m: 0.5 }} variant="contained" color="error" onClick={() => deleteEmp(employee.id)} title="Obriši">
+                    <Button name="employeesRemoveBtn"  sx={{ m: 0.5 }} variant="contained" color="error" onClick={() => deleteEmp(employee.id)} title="Obriši">
                       <DeleteIcon/>
                     </Button>
                   </Box>

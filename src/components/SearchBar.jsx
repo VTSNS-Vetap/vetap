@@ -25,7 +25,7 @@ const SearchInput = styled(InputBase)({
   flex: 1,
 });
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({name, onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleInputChange = (event) => {
@@ -44,6 +44,7 @@ const SearchBar = ({ onSearch }) => {
         <SearchIcon />
       </SearchIconWrapper>
       <SearchInput
+        name={name}
         placeholder="Pretraži..."
         inputProps={{ 'aria-label': 'search' }}
         value={searchTerm}
