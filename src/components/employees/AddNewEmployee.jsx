@@ -24,13 +24,17 @@ const AddNewEmployee = ({ isOpen, toggleModal, getZaposleni }) => {
 
       const handleDateChange = (date) => {
           setSelectedDate(date);
+          setFormData({
+            ...formData,
+            PocetakRada: date
+            });
       };
     const [formData, setFormData] = useState({
         "Ime": "",
         "JMBG": "",
         "KontaktSifra": "/Kontakt/QzvocI34fTg1932fbC5m",
         "Nadredjeni": "Zaposleni/KjNdLLsLDKlIQPf4RtDS",
-        "PocetakRada": selectedDate,
+        "PocetakRada": "",
         "PozicijaUFirmiSifra": "/PozicijaUFirmi/19RfnXopMQ2ZZk7ZwTxX",
         "Prezime": "",
         "Email" :"",
@@ -42,10 +46,12 @@ const AddNewEmployee = ({ isOpen, toggleModal, getZaposleni }) => {
       });
       
     const handleChange = (e) => {
+      console.log(formData)
         setFormData({
         ...formData,
         [e.target.name]: e.target.value
         });
+        
     };
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -148,6 +154,7 @@ const AddNewEmployee = ({ isOpen, toggleModal, getZaposleni }) => {
                     value={selectedDate ? selectedDate.toLocaleDateString('sr-RS') : ''}
                     InputProps={{ readOnly: true }}
                     onClick={handleClick}
+                    onChange={handleChange}
                     style={{ position: 'absolute', width:'100%', zIndex:100,left: 0 }}
                 />           
                 <DatePicker
