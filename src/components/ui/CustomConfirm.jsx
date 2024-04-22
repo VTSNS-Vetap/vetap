@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function CustomConfirm({ open, onClose, onConfirm, title, message }) {
+export default function CustomConfirm({ open, onClose, onConfirm, title, message, name }) {
  
   return (
     <Dialog
@@ -14,6 +14,7 @@ export default function CustomConfirm({ open, onClose, onConfirm, title, message
       onClose={onClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      name={name}
     >
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
@@ -22,8 +23,8 @@ export default function CustomConfirm({ open, onClose, onConfirm, title, message
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Otkaži</Button>
-        <Button onClick={onConfirm} autoFocus>
+        <Button name="CancelBtn" onClick={onClose}>Otkaži</Button>
+        <Button name="ConfirmBtn" onClick={onConfirm} autoFocus>
           Potvrdi
         </Button>
       </DialogActions>
