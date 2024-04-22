@@ -115,7 +115,7 @@ const AddNewEmployee = ({ isOpen, toggleModal, getZaposleni }) => {
                   value={formData.Rola}
                   label="Rola"
                   onChange={handleChange}
-                  name={"Rola"}
+                  name={"employeesSelectRoleInput"}
                 >
                   <MenuItem value={'user'}>Korisnik</MenuItem>
                   <MenuItem value={'admin'}>Administrator</MenuItem>
@@ -123,34 +123,34 @@ const AddNewEmployee = ({ isOpen, toggleModal, getZaposleni }) => {
               </FormControl>            
               <FormControl sx={{ m: 1, width : '100%' }}>
                 <InputLabel id="Ime"></InputLabel>
-                <TextField labelId="Ime" label="Ime" type="text" color='primary' name="Ime" value={formData.Ime} onChange={handleChange} required/>
+                <TextField labelId="Ime" label="Ime" type="text" color='primary' name="employeesImeInput" value={formData.Ime} onChange={handleChange} required/>
               </FormControl>    
               <FormControl sx={{ m: 1, width : '100%' }}>
                 <InputLabel id="Telefon"></InputLabel>
-                <TextField labelId="Telefon" label="Telefon" type="text" color='primary' name="Telefon" value={formData.Telefon} onChange={handleChange} required/>
+                <TextField labelId="Telefon" label="Telefon" type="text" color='primary' name="employeesTelefonInput" value={formData.Telefon} onChange={handleChange} required/>
               </FormControl>          
               <FormControl sx={{ m: 1, width : '100%' }}>
                 <InputLabel id="Adresa"></InputLabel>
-                <TextField labelId="Adresa" label="Adresa" type="text" color='primary' name="Adresa" value={formData.Adresa} onChange={handleChange} required/>
+                <TextField labelId="Adresa" label="Adresa" type="text" color='primary' name="employeesAdresaInput" value={formData.Adresa} onChange={handleChange} required/>
               </FormControl> 
             </Box>
             <Box sx={{ p:1 }}>
               <FormControl sx={{ m: 1, width : '100%' }}>
                 <InputLabel id="email"></InputLabel>
-                <TextField labelId="email"  label="Email" InputProps={{type: 'email'}} color='primary'  name="Email" value={formData.Email} onChange={handleChange} required/>
+                <TextField labelId="email"  label="Email" InputProps={{type: 'email'}} color='primary'  name="employeesEmailInput" value={formData.Email} onChange={handleChange} required/>
               </FormControl>
               <FormControl sx={{ m: 1, width : '100%' }}>  
                 <InputLabel id="Prezime"></InputLabel>
-                <TextField labelId="Prezime" label="Prezime" type="text" color='primary' placeholder="Prezime"  name="Prezime" value={formData.Prezime} onChange={handleChange} required/>
+                <TextField labelId="Prezime" label="Prezime" type="text" color='primary' placeholder="Prezime"  name="employeesPrezimeInput" value={formData.Prezime} onChange={handleChange} required/>
               </FormControl>
               <FormControl sx={{ m: 1, width : '100%' }}>
                 <InputLabel id="JMBG"></InputLabel>
-                <TextField labelId="JMBG" label="JMBG" type="text" color='primary' placeholder="JMBG"  name="JMBG" value={formData.JMBG} onChange={handleChange} inputProps={{ maxLength: 13, minLength: 13 }} required/>
+                <TextField labelId="JMBG" label="JMBG" type="text" color='primary' placeholder="JMBG"  name="employeesJMBGInput" value={formData.JMBG} onChange={handleChange} inputProps={{ maxLength: 13, minLength: 13 }} required/>
               </FormControl>    
               <FormControl sx={{ m: 1, width : '100%',position: 'relative' }}>       
                 <TextField
                     label="Datum početka rada"
-                    name="PocetakRada"
+                    name="employeesPocetakRadaInput"
                     value={selectedDate ? selectedDate.toLocaleDateString('sr-RS') : ''}
                     InputProps={{ readOnly: true }}
                     onClick={handleClick}
@@ -169,7 +169,7 @@ const AddNewEmployee = ({ isOpen, toggleModal, getZaposleni }) => {
             </Box>
           </Box>
             <FormControl sx={{ m: 1, width : '100%' }}>
-              <Button type="submit" variant="contained" color="primary">SAČUVAJ</Button>
+              <Button name="employeesAddSubmit" type="submit" variant="contained" color="primary">SAČUVAJ</Button>
             </FormControl>
           </form>
         </Box>
