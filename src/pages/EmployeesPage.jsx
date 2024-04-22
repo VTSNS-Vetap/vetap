@@ -164,6 +164,7 @@ const EmployeesPage = () => {
         onConfirm={handleDeleteConfirmed}
         title="Potvrda"
         message="Da li ste sigurni da želite da obrišete zaposlenog?"
+        name="ConfirmModal"
       />
       <AddNewEmployee isOpen={modalAddNewOpen} toggleModal={toggleAddNewModal} getZaposleni={getZaposleniRef}/>
       <EditEmployee isOpen={modalEditOpen} toggleModal={toggleEditModal} empId = {empId} getZaposleni={getZaposleniRef}/>
